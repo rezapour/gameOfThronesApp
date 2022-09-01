@@ -17,7 +17,7 @@ import javax.inject.Inject
 class HousesListViewModel @Inject constructor(private val repository: HouseRepository) :
     ViewModel() {
     private val _housesDataState: MutableLiveData<DataState<List<HouseDomain>>> = MutableLiveData()
-    private val housesDataState: LiveData<DataState<List<HouseDomain>>> get() = _housesDataState
+    val housesDataState: LiveData<DataState<List<HouseDomain>>> get() = _housesDataState
 
 
     fun getHouses() {
