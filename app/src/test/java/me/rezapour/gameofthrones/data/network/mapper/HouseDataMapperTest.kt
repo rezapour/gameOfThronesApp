@@ -24,7 +24,7 @@ internal class HouseDataMapperTest {
     }
 
 
-    fun createEntityList(): List<HouseNetworkEntity> {
+    private fun createEntityList(): List<HouseNetworkEntity> {
         val house1 = HouseNetworkEntity(
             url = "https://www.anapioficeandfire.com/api/houses/1",
             name = "House Algood",
@@ -71,7 +71,7 @@ internal class HouseDataMapperTest {
     }
 
 
-    fun createDomainList(): List<HouseDomain> {
+    private fun createDomainList(): List<HouseDomain> {
         val house1 = HouseDomain(
             url = "https://www.anapioficeandfire.com/api/houses/1",
             name = "House Algood",

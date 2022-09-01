@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import me.rezapour.gameofthrones.data.network.Impl.NetworkDataProviderImpl
+import me.rezapour.gameofthrones.data.network.impl.NetworkDataProviderImpl
 import me.rezapour.gameofthrones.data.network.NetWorkDataProvider
 import me.rezapour.gameofthrones.data.network.mapper.HouseDataMapper
 import me.rezapour.gameofthrones.data.network.retrofit.ApiService

@@ -1,4 +1,4 @@
-package me.rezapour.gameofthrones.data.network.Impl
+package me.rezapour.gameofthrones.data.network.impl
 
 import me.rezapour.gameofthrones.data.exception.DataProviderException
 import me.rezapour.gameofthrones.data.network.NetWorkDataProvider
