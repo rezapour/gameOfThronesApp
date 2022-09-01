@@ -22,7 +22,6 @@ class HousesListViewModel @Inject constructor(private val repository: HouseRepos
 
     fun getHouses() {
         _housesDataState.value = DataState.Loading
-
         viewModelScope.launch {
             try {
                 repository.getHouses().collect() { houses ->
