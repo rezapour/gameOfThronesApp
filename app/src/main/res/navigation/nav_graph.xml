@@ -9,5 +9,18 @@
         android:id="@+id/housesListFragment"
         android:name="me.rezapour.gameofthrones.view.houses_list_view.HousesListFragment"
         android:label="fragment_houses_list"
-        tools:layout="@layout/fragment_houses_list" />
+        tools:layout="@layout/fragment_houses_list" >
+        <action
+            android:id="@+id/action_housesListFragment_to_houseDetailFragment"
+            app:destination="@id/houseDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/houseDetailFragment"
+        android:name="me.rezapour.gameofthrones.view.house_detail.HouseDetailFragment"
+        android:label="fragment_house_detail"
+        tools:layout="@layout/fragment_house_detail" >
+        <argument
+            android:name="House"
+            app:argType="me.rezapour.gameofthrones.model.house.HouseDomain" />
+    </fragment>
 </navigation>

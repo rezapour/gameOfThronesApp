@@ -3,6 +3,7 @@ package me.rezapour.gameofthrones.view.houses_list_view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import me.rezapour.gameofthrones.databinding.RowHouseDetailBinding
 import me.rezapour.gameofthrones.model.house.HouseDomain
@@ -18,11 +19,15 @@ class HousesListAdapter(
         private val houseName: TextView = binding.txtHouseName
         private val region: TextView = binding.txtRegion
         private val coatOfArms: TextView = binding.txtCoatOfArms
+        private val row: ConstraintLayout = binding.rowLayout
         fun onBind(house: HouseDomain) {
             houseName.text = house.name
             region.text = house.region
             coatOfArms.text = house.coatOfArms
-            onClick(house)
+
+            row.setOnClickListener {
+                onClick(house)
+            }
         }
 
     }

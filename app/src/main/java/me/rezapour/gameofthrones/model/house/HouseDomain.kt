@@ -1,5 +1,9 @@
 package me.rezapour.gameofthrones.model.house
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class HouseDomain(
     var url: String,
     var name: String,
@@ -17,4 +21,4 @@ data class HouseDomain(
     var ancestralWeapons: ArrayList<String>,
     var cadetBranches: ArrayList<String>,
     var swornMembers: ArrayList<String>
-)
+) : Parcelable

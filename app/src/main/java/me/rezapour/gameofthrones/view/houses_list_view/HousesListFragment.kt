@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +29,7 @@ class HousesListFragment : Fragment() {
     private lateinit var swiper: SwipeRefreshLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: HousesListAdapter
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +41,7 @@ class HousesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
         setupFragment()
     }
 
@@ -49,8 +53,8 @@ class HousesListFragment : Fragment() {
 
     private fun setupUi() {
         recyclerView = binding.houseListRecyclerView
-        adapter = HousesListAdapter(ArrayList()){
-            //TODO onlick listener
+        adapter = HousesListAdapter(ArrayList()) { house ->
+            gotoDetailFragment(house)
         }
         recyclerView.adapter = adapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -58,6 +62,8 @@ class HousesListFragment : Fragment() {
         val dividerItemDecoration =
             DividerItemDecoration(recyclerView.context, layoutManager.orientation)
         recyclerView.addItemDecoration(dividerItemDecoration)
+
+
 
         swiper = binding.swiperLayout
         swiper.setOnRefreshListener {
@@ -107,5 +113,11 @@ class HousesListFragment : Fragment() {
                 retry()
             }
             .show();
+    }
+
+    private fun gotoDetailFragment(house: HouseDomain) {
+        val directions =
+            HousesListFragmentDirections.actionHousesListFragmentToHouseDetailFragment(house)
+        navController.navigate(directions)
     }
 }
