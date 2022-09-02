@@ -20,9 +20,9 @@ internal class HouseRepositoryImplTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    lateinit var dataProvider: NetWorkDataProvider
+    private lateinit var dataProvider: NetWorkDataProvider
 
-    lateinit var repository: HouseRepositoryImpl
+    private lateinit var repository: HouseRepositoryImpl
 
     @Before
     fun before() {
