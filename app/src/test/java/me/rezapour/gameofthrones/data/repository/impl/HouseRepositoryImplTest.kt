@@ -5,6 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import me.rezapour.gameofthrones.data.exception.DataProviderException
 import me.rezapour.gameofthrones.data.network.NetWorkDataProvider
+import me.rezapour.gameofthrones.model.charecter.CharacterDomain
 import me.rezapour.gameofthrones.model.house.HouseDomain
 import me.rezapour.mytask.util.MainCoroutineRule
 import org.junit.Before
@@ -31,7 +32,7 @@ internal class HouseRepositoryImplTest {
     }
 
     @Test
-    fun `get houses return cars when response is successful`() {
+    fun `get houses return houseList when response is successful`() {
         runBlocking {
             whenever(dataProvider.getHouses()).thenReturn(createDomainList())
 
@@ -52,6 +53,32 @@ internal class HouseRepositoryImplTest {
                 assertThat(awaitError()).isInstanceOf(DataProviderException::class.java)
             }
             Mockito.verify(dataProvider, times(1)).getHouses()
+        }
+    }
+
+
+    @Test
+    fun `get character return characterDomain when response is successful`() {
+        runBlocking {
+            whenever(dataProvider.getCharacter("/")).thenReturn(createCharacterDomain())
+
+            repository.getCharacter("/").test {
+                assertThat(awaitItem()).isEqualTo(createCharacterDomain())
+                awaitComplete()
+            }
+            Mockito.verify(dataProvider, times(1)).getCharacter("/")
+        }
+    }
+
+    @Test
+    fun `get character unsuccessful when response has error`() {
+        runBlocking {
+            whenever(dataProvider.getCharacter("/")).thenThrow(DataProviderException::class.java)
+
+            repository.getCharacter("/").test {
+                assertThat(awaitError()).isInstanceOf(DataProviderException::class.java)
+            }
+            Mockito.verify(dataProvider, times(1)).getCharacter("/")
         }
     }
 
@@ -100,6 +127,49 @@ internal class HouseRepositoryImplTest {
         )
 
         return arrayListOf(house1, house2)
+    }
+
+
+    private fun createCharacterDomain(): CharacterDomain {
+        return CharacterDomain(
+            url = "https://anapioficeandfire.com/api/characters/583",
+            name = "Jon Snow",
+            gender = "Male",
+            culture = "Northmen",
+            born = "In 283 AC",
+            died = "",
+            titles = arrayListOf("Lord Commander of the Night's Watch"),
+            aliases = arrayListOf(
+                "Lord Snow",
+                "Ned Stark's Bastard",
+                "The Snow of Winterfell",
+                "The Crow-Come-Over",
+                "The 998th Lord Commander of the Night's Watch",
+                "The Bastard of Winterfell",
+                "The Black Bastard of the Wall",
+                "Lord Crow"
+            ),
+            father = "",
+            mother = "",
+            spouse = "",
+            allegiances = arrayListOf("https://anapioficeandfire.com/api/houses/362"),
+            books = arrayListOf("https://anapioficeandfire.com/api/books/5"),
+            povBooks = arrayListOf(
+                "https://anapioficeandfire.com/api/books/1",
+                "https://anapioficeandfire.com/api/books/2",
+                "https://anapioficeandfire.com/api/books/3",
+                "https://anapioficeandfire.com/api/books/8"
+            ),
+            tvSeries = arrayListOf(
+                "Season 1",
+                "Season 2",
+                "Season 3",
+                "Season 4",
+                "Season 5",
+                "Season 6"
+            ),
+            playedBy = arrayListOf("Kit Harington")
+        )
     }
 
 
