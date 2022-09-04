@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rowLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/txtHouseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/aclonica"
+        android:text="House Algood"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtRegionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="region:"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtHouseName"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:textSize="18sp"
+        android:fontFamily="@font/aclonica"/>
+
+    <TextView
+        android:id="@+id/txtRegion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="The Westerlands"
+        android:textSize="18sp"
+        android:fontFamily="@font/aclonica"
+        app:layout_constraintTop_toTopOf="@id/txtRegionLabel"
+        app:layout_constraintStart_toEndOf="@id/txtRegionLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"/>
+
+
+    <TextView
+        android:id="@+id/txtCoatOfArms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtRegionLabel"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/aclonica"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:text="Gyronny Gules and Sable, a hand couped Or"
+
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
