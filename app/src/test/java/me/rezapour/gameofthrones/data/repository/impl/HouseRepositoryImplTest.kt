@@ -7,7 +7,9 @@ import me.rezapour.gameofthrones.data.exception.DataProviderException
 import me.rezapour.gameofthrones.data.network.NetWorkDataProvider
 import me.rezapour.gameofthrones.model.charecter.CharacterDomain
 import me.rezapour.gameofthrones.model.house.HouseDomain
+import me.rezapour.gameofthrones.model.house.HouseResponseDomain
 import me.rezapour.mytask.util.MainCoroutineRule
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -34,25 +36,25 @@ internal class HouseRepositoryImplTest {
     @Test
     fun `get houses return houseList when response is successful`() {
         runBlocking {
-            whenever(dataProvider.getHouses()).thenReturn(createDomainList())
+            whenever(dataProvider.getHouses("/")).thenReturn(createDomainList())
 
-            repository.getHouses().test {
+            repository.getHouses("/").test {
                 assertThat(awaitItem()).isEqualTo(createDomainList())
                 awaitComplete()
             }
-            Mockito.verify(dataProvider, times(1)).getHouses()
+            Mockito.verify(dataProvider, times(1)).getHouses("/")
         }
     }
 
     @Test
     fun `get houses unsuccessful when response has error`() {
         runBlocking {
-            whenever(dataProvider.getHouses()).thenThrow(DataProviderException::class.java)
+            whenever(dataProvider.getHouses("/")).thenThrow(DataProviderException::class.java)
 
-            repository.getHouses().test {
+            repository.getHouses("/").test {
                 assertThat(awaitError()).isInstanceOf(DataProviderException::class.java)
             }
-            Mockito.verify(dataProvider, times(1)).getHouses()
+            Mockito.verify(dataProvider, times(1)).getHouses("/")
         }
     }
 
@@ -62,10 +64,10 @@ internal class HouseRepositoryImplTest {
         runBlocking {
             whenever(dataProvider.getCharacter("/")).thenReturn(createCharacterDomain())
 
-            repository.getCharacter("/").test {
-                assertThat(awaitItem()).isEqualTo(createCharacterDomain())
-                awaitComplete()
-            }
+
+            assertThat(repository.getCharacter("/")).isEqualTo(createCharacterDomain())
+
+
             Mockito.verify(dataProvider, times(1)).getCharacter("/")
         }
     }
@@ -75,15 +77,18 @@ internal class HouseRepositoryImplTest {
         runBlocking {
             whenever(dataProvider.getCharacter("/")).thenThrow(DataProviderException::class.java)
 
-            repository.getCharacter("/").test {
-                assertThat(awaitError()).isInstanceOf(DataProviderException::class.java)
+             Assert.assertThrows(DataProviderException::class.java) {
+                runBlocking {
+                    repository.getCharacter("/")
+                }
             }
+
             Mockito.verify(dataProvider, times(1)).getCharacter("/")
         }
     }
 
 
-    private fun createDomainList(): List<HouseDomain> {
+    private fun createDomainList(): HouseResponseDomain {
         val house1 = HouseDomain(
             url = "https://www.anapioficeandfire.com/api/houses/1",
             name = "House Algood",
@@ -126,7 +131,10 @@ internal class HouseRepositoryImplTest {
             )
         )
 
-        return arrayListOf(house1, house2)
+        return HouseResponseDomain(
+            "https://www.anapioficeandfire.com/api/houses?page=2&pageSize=10",
+            arrayListOf(house1, house2)
+        )
     }
 
 

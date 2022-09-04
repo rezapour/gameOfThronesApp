@@ -48,14 +48,27 @@ class HousesListFragment : Fragment() {
     private fun setupFragment() {
         setupUi()
         subscribeToViewModel()
-        getData()
+        checkLiveData()
+
+    }
+
+
+    private fun checkLiveData() {
+        val dataState = viewModel.housesDataState.value
+        if (dataState != null && (dataState is DataState.Success)) {
+            onSuccess(dataState.data)
+        } else {
+            getData()
+        }
+
+
     }
 
     private fun setupUi() {
         recyclerView = binding.houseListRecyclerView
-        adapter = HousesListAdapter(ArrayList()) { house ->
+        adapter = HousesListAdapter(ArrayList(), { house ->
             gotoDetailFragment(house)
-        }
+        }, { getData() })
         recyclerView.adapter = adapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
@@ -67,6 +80,7 @@ class HousesListFragment : Fragment() {
 
         swiper = binding.swiperLayout
         swiper.setOnRefreshListener {
+            viewModel.refreshList()
             getData()
         }
     }

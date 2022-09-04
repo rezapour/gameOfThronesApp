@@ -8,8 +8,8 @@ import retrofit2.http.Url
 
 interface ApiService {
 
-    @GET("houses")
-    suspend fun getHouses(): Response<List<HouseNetworkEntity>>
+    @GET()
+    suspend fun getHouses(@Url url: String): Response<List<HouseNetworkEntity>>
 
     @GET()
     suspend fun getCharacter(@Url url: String): Response<CharacterNetworkEntity>

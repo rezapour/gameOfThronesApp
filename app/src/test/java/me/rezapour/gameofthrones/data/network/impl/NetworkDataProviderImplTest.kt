@@ -18,6 +18,7 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import me.rezapour.gameofthrones.R
 import me.rezapour.gameofthrones.model.charecter.CharacterDomain
+import me.rezapour.gameofthrones.model.house.HouseResponseDomain
 
 
 class NetworkDataProviderImplTest {
@@ -54,10 +55,14 @@ class NetworkDataProviderImplTest {
         val responseTest = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_OK)
             .setBody(response("Houses.json"))
+            .setHeader(
+                "Link",
+                "<https://www.anapioficeandfire.com/api/houses?page=2&pageSize=10>; rel=\"next\", <https://www.anapioficeandfire.com/api/houses?page=1&pageSize=10>; rel=\"first\", <https://www.anapioficeandfire.com/api/houses?page=45&pageSize=10>; rel=\"last\""
+            )
         mockWebServer.enqueue(responseTest)
 
         runBlocking {
-            val response = dataProvider.getHouses()
+            val response = dataProvider.getHouses("/")
             assertThat(response).isEqualTo(createDomainList())
         }
     }
@@ -72,7 +77,7 @@ class NetworkDataProviderImplTest {
 
         val messageId = Assert.assertThrows(DataProviderException::class.java) {
             runBlocking {
-                dataProvider.getHouses()
+                dataProvider.getHouses("/")
             }
         }.messageId
         assertEquals(R.string.error_internet_connection, messageId)
@@ -90,7 +95,7 @@ class NetworkDataProviderImplTest {
 
         val messageId = Assert.assertThrows(DataProviderException::class.java) {
             runBlocking {
-                dataProvider.getHouses()
+                dataProvider.getHouses("/")
             }
         }.messageId
         assertEquals(R.string.error_access_denied, messageId)
@@ -108,7 +113,7 @@ class NetworkDataProviderImplTest {
 
         val messageId = Assert.assertThrows(DataProviderException::class.java) {
             runBlocking {
-                dataProvider.getHouses()
+                dataProvider.getHouses("/")
             }
         }.messageId
         assertEquals(R.string.error_server_error, messageId)
@@ -125,7 +130,7 @@ class NetworkDataProviderImplTest {
 
         val messageId = Assert.assertThrows(DataProviderException::class.java) {
             runBlocking {
-                dataProvider.getHouses()
+                dataProvider.getHouses("/")
             }
         }.messageId
         assertEquals(R.string.error_internet_connection, messageId)
@@ -215,7 +220,7 @@ class NetworkDataProviderImplTest {
     }
 
 
-    private fun createDomainList(): List<HouseDomain> {
+    private fun createDomainList(): HouseResponseDomain {
         val house1 = HouseDomain(
             url = "https://www.anapioficeandfire.com/api/houses/1",
             name = "House Algood",
@@ -259,7 +264,10 @@ class NetworkDataProviderImplTest {
                 "https://www.anapioficeandfire.com/api/characters/1922"
             )
         )
-        return arrayListOf(house1, house2)
+        return HouseResponseDomain(
+            "https://www.anapioficeandfire.com/api/houses?page=2&pageSize=10",
+            arrayListOf(house1, house2)
+        )
     }
 
 

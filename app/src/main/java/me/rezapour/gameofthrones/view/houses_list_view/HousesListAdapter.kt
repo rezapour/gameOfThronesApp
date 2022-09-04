@@ -10,7 +10,8 @@ import me.rezapour.gameofthrones.model.house.HouseDomain
 
 class HousesListAdapter(
     val houseList: ArrayList<HouseDomain>,
-    val onClick: (house: HouseDomain) -> Unit
+    val onClick: (house: HouseDomain) -> Unit,
+    val onButtomRiched: () -> Unit
 ) :
     RecyclerView.Adapter<HousesListAdapter.HouseDetailViewHolder>() {
 
@@ -40,6 +41,8 @@ class HousesListAdapter(
 
     override fun onBindViewHolder(holder: HouseDetailViewHolder, position: Int) {
         holder.onBind(houseList[position])
+        if (position == houseList.size - 1)
+            onButtomRiched()
     }
 
     override fun getItemCount() = houseList.size

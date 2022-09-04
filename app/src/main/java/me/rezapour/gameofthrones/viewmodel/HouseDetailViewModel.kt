@@ -6,9 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import me.rezapour.gameofthrones.data.exception.DataProviderException
+import kotlinx.coroutines.withContext
 import me.rezapour.gameofthrones.data.repository.HouseRepository
 import me.rezapour.gameofthrones.model.charecter.RequestData
 import me.rezapour.gameofthrones.model.charecter.UrlResponse
@@ -27,21 +26,22 @@ class HouseDetailViewModel @Inject constructor(private val repository: HouseRepo
     fun loadUrls(requestData: List<RequestData>) {
         _swornMembersDataState.value = DataState.Loading
         viewModelScope.launch {
-            try {
-                val urlResponse =
-                    requestData.filter { requestData -> requestData.url != "" }.map { data ->
-                        async(Dispatchers.IO) {
+
+            val urlResponse =
+                requestData.filter { requestData -> requestData.url != "" }.map { data ->
+                    try {
+                        withContext(Dispatchers.IO) {
                             val response = repository.getCharacter(data.url)
                             UrlResponse(response.name, data.element)
                         }
-                    }.map { it.await() }
-
-                _swornMembersDataState.postValue(DataState.Success(urlResponse))
-            } catch (e: DataProviderException) {
-                _swornMembersDataState.postValue(DataState.Error(e.messageId))
-            } catch (e: Exception) {
-                _swornMembersDataState.postValue(DataState.DefaultError)
-            }
+                    } catch (e: Exception) {
+                        UrlResponse("Data Error", data.element)
+                    }
+                }
+            _swornMembersDataState.postValue(DataState.Success(urlResponse))
         }
     }
+
+//    fun loadCharacter(url: String) {
+
 }

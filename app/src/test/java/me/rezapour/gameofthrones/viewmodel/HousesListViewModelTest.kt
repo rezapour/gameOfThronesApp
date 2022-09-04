@@ -10,11 +10,14 @@ import kotlinx.coroutines.runBlocking
 import me.rezapour.gameofthrones.data.exception.DataProviderException
 import me.rezapour.gameofthrones.data.repository.HouseRepository
 import me.rezapour.gameofthrones.model.house.HouseDomain
+import me.rezapour.gameofthrones.model.house.HouseResponseDomain
 import me.rezapour.gameofthrones.utils.DataState
 import me.rezapour.mytask.util.MainCoroutineRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyString
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.lang.RuntimeException
@@ -40,7 +43,7 @@ class HousesListViewModelTest {
     @Test
     fun `get houses return house list when response is successful`() {
         runBlocking() {
-            whenever(repository.getHouses()).thenReturn(createDomainList())
+            whenever(repository.getHouses(any())).thenReturn(createDomainList())
         }
         viewModel.getHouses()
 
@@ -51,7 +54,7 @@ class HousesListViewModelTest {
     @Test
     fun `get houses return Error when response is DataProviderException`() {
         runBlocking() {
-            whenever(repository.getHouses()).thenThrow(DataProviderException::class.java)
+            whenever(repository.getHouses(anyString())).thenThrow(DataProviderException::class.java)
         }
         viewModel.getHouses()
         val valueRespond = viewModel.housesDataState.getOrAwaitValueTest()
@@ -61,7 +64,7 @@ class HousesListViewModelTest {
     @Test
     fun `get houses return Error when response is Exception`() {
         runBlocking() {
-            whenever(repository.getHouses()).thenThrow(RuntimeException::class.java)
+            whenever(repository.getHouses(anyString())).thenThrow(RuntimeException::class.java)
         }
         viewModel.getHouses()
         val valueRespond = viewModel.housesDataState.getOrAwaitValueTest()
@@ -69,7 +72,7 @@ class HousesListViewModelTest {
     }
 
 
-    private fun createDomainList(): Flow<List<HouseDomain>> = flow {
+    private fun createDomainList(): Flow<HouseResponseDomain> = flow {
         val house1 = HouseDomain(
             url = "https://www.anapioficeandfire.com/api/houses/1",
             name = "House Algood",
@@ -112,7 +115,7 @@ class HousesListViewModelTest {
             )
         )
 
-        emit(arrayListOf(house1, house2))
+        emit(HouseResponseDomain("/", arrayListOf(house1, house2)))
     }
 
 
