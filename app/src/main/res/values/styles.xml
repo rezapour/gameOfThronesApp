@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="TextStyleTitle">
+        <item name="android:fontFamily">@font/aclonica</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextStyleValue">
+        <item name="android:fontFamily">@font/aclonica</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:layout_marginStart">8dp</item>
+    </style>
+
+
+</resources>

@@ -13,8 +13,8 @@ class HouseRepositoryImpl(private val dataProvider: NetWorkDataProvider) : House
         emit(housesList)
     }
 
-    override suspend fun getCharacter(url: String): Flow<CharacterDomain> = flow {
-        val character = dataProvider.getCharacter(url)
-        emit(character)
+    override suspend fun getCharacter(url: String): CharacterDomain {
+        return dataProvider.getCharacter(url)
+
     }
 }

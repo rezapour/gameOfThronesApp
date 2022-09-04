@@ -10,5 +10,5 @@ interface HouseRepository {
     suspend fun getHouses(): Flow<List<HouseDomain>>
 
     @Throws(DataProviderException::class)
-    suspend fun getCharacter(url: String): Flow<CharacterDomain>
+    suspend fun getCharacter(url: String): CharacterDomain
 }
